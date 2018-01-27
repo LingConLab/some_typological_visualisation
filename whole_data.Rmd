@@ -1,0 +1,216 @@
+---
+title: "Some title"
+output:
+  html_document:
+    theme: spacelab
+    highlight: pygments
+    code_folding: hide
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, fig.width=7.5)
+```
+
+```{r}
+library(lingtypology)
+library(tidyverse)
+library(spatstat)
+```
+
+
+## {.tabset .tabset-fade .tabset-pills}
+### Complexity
+Inventory complexity, i.e. the number of elements per subsystem for a number of grammatical subsystems (phonemes, verb inflectional categories, genders, …).
+
+* `overall_complexity_with_roles` -- All datapoints on complexity, including the number of core argument roles indexed on the verb.
+* `morphological_complexity_with_roles` -- Same as above except ony morphological data.  This is the measure used e.g. in Bentz, Nichols, & Jäger ALT 2017 workshop paper.
+
+```{r}
+complex <- read_tsv("complexity.csv", skip = 1)
+complex <- left_join(complex, autotyp)
+complex$Glottocode <- as.character(complex$Glottocode)
+complex[c(56, 71), 11] <- c("serb1264", "lazz1240")
+complex <- complex[, -1]
+complex$language <- lang.gltc(complex$Glottocode)
+complex$language[c(35, 87, 105, 166, 204)] <- c("Western Mari", "El Nayar Cora", "Armenian", "Wangaaybuwan-Ngiyambaa", "Kenuzi-Dongola")
+map.feature(complex$language,
+            features = complex$Overall_complexity,
+            latitude = complex$Lat,
+            longitude = complex$ULong,
+            label = complex$language,
+            title = "Overall complexity",
+            color = c("white", "red"))
+
+map.feature(complex$language,
+            complex$Morphological_complexity,
+            latitude = complex$Lat,
+            longitude = complex$ULong,
+            label = complex$language,
+            title = "Morphological complexity", 
+            color = c("white", "red"))
+```
+
+
+
+### Person
+Lexical and inflectional points (on a questionnaire where each item identifies a pattern or behavior of the category of person as to whether it is inflectional or lexical). Entries are total points per language, and percentages (calculated only when total for each is over 2 points). 
+
+### Causativization
+Percent of a 9-item verb pair list where the causal (=semantic causative) member of the pair is derived.
+```{r}
+caus <- read_tsv("causative.csv", skip = 1)
+
+caus <- left_join(caus, autotyp)
+caus$language2 <- lang.gltc(caus$Glottocode)
+caus$language2[c(7, 13, 15, 19, 30, 82, 113, 115, 139, 176, 205)] <-
+  c("Central Kanuri",
+    "Kenuzi-Dongola",
+    "South-Central Kikongo",
+    "Soga",
+    "Armenian",
+    "Western Mari",
+    "Russia Buriat",
+    "Halh Mongolian",
+    "Aka-Kede",
+    "Central Ojibwa",
+    "Serbian")
+
+map.feature(caus$language2,
+            latitude = caus$lat,
+            longitude = caus$long,
+            label = paste(caus$language, round(caus$`% Cs`, 2)),
+            features = caus$`% Cs`,
+            color = c("white", "red"),
+            title = "% Cs")
+```
+
+### Inclusive/exclusive
+Presence vs. absence of inclusive/exclusive opposition.  Data from Autotyp database.
+```{r}
+incl_excl <- read_tsv("excl_incl.csv", skip = 1)
+incl_excl <- left_join(incl_excl, autotyp)
+incl_excl$language2 <- lang.gltc(incl_excl$Glottocode)
+incl_excl$language2[c(22, 26, 35, 40, 56, 63, 86, 136, 137, 138, 139, 144, 151,
+                 174, 203, 213, 307, 354, 387, 425)] <-
+  c("Central Moroccan Berber", # "Berber"
+    "Central Kanuri", # "Kanuri"
+    "Central Grebo", # "Grebo"
+    "Kenuzi-Dongola",  # Nubian (Dongolese)
+    "Plateau Malagasy", # "Malagasy"
+    "Armenian", # "Armenian (Eastern)"
+    "Western Mari", # "Mari"
+    "Sakha", # "Yakut"
+    "Nganasan", # "Nganasan"
+    "Obdorsk Khanty", # "Khanty"
+    "Udihe", # "Udehe"
+    "Manchu", # "Manchu"
+    "Aka-Kede", # "Great Andamanese"
+    "Gurung", # "Gurung"
+    "Atampaya", # "Uradhi"
+    "Wangaaybuwan-Ngiyambaa", # "Ngiyambaa"
+    "Futuna-Aniwa", # "Futuna"
+    "Central Ojibwa", # "Ojibwa"
+    "Totontepec Mixe", # "Mixe"
+    "Asheninka Perene") # "Ashéninka Perené"
+
+incl_excl %>% 
+  arrange(desc(ie_type)) ->
+  incl_excl
+
+map.feature(incl_excl$language2,
+            latitude = incl_excl$lat,
+            longitude = incl_excl$long,
+            label = incl_excl$language,
+            features = incl_excl$ie_type,
+            title = "inclusive/exclusive opposition",
+            color = c("tomato",
+                      "darkgreen",
+                      "lightgrey",
+                      "lightseagreen"))
+```
+
+### Noun- and verb-based
+% of items on a 50-word list that have noun vs. verb as base of the derivational paradigm.
+
+#### 5.1.1 % N/all
+```{r}
+NV <- read_tsv("N-V.csv", skip = 1)
+
+NV <- left_join(NV, autotyp)
+NV$language2 <- lang.gltc(NV$Glottocode)
+NV$language2[c(1,3,11,19)] <- c("Central Kanuri",
+                                "Kenuzi-Dongola",
+                                "Upper Sorbian",
+                                "Western Mari")
+
+map.feature(NV$language2,
+            latitude = NV$lat,
+            longitude = NV$ulong,
+            label = paste(NV$language, round(NV$`% N/all`, 2)),
+            features = NV$`% N/all`,
+            color = c("white", "red"),
+            title = "% N/all")
+```
+
+#### 5.1.2 % V/all
+```{r}
+map.feature(NV$language2,
+            latitude = NV$lat,
+            longitude = NV$ulong,
+            label = paste(NV$language, round(NV$`% V/all`, 2)),
+            features = NV$`% V/all`,
+            color = c("white", "red"),
+            title = "% V/all")
+```
+
+#### 5.1.3 % Flex/all
+```{r}
+map.feature(NV$language2,
+            latitude = NV$lat,
+            longitude = NV$ulong,
+            label = paste(NV$language, round(NV$`% Flex/all`, 2)),
+            features = NV$`% Flex/all`,
+            color = c("white", "red"),
+            title = "% Flex/all")
+```
+
+#### 5.2.1 Nearest neighbour
+
+Compute Euclidean distance to nearest neighbour for all points in our dataset. Here are the six largest values:
+```{r}
+data.frame(nn = nndist(NV[, 3:4], k = 1)) %>%
+  mutate(language = NV$language) %>% 
+  arrange(nn) %>% 
+  mutate(id = 1:nrow(NV),
+         type = "our dataset") ->
+  nn_df
+```
+
+Compare nearest neighbour for our dataset and the whole glottolog database in `lingtypology`:
+```{r}
+data.frame(nn = nndist(na.omit(glottolog.modified[,4:5]), k = 1)) %>%
+  mutate(language = glottolog.modified[!is.na(glottolog.modified$longitude),]$language) %>% 
+  arrange(nn) %>% 
+  mutate(id = 1:nrow(na.omit(glottolog.modified[,4:5])),
+         type = "whole glottolog (languages only)") ->
+  nn_glottolog
+
+nn_glottolog %>% 
+  rbind(nn_df) %>% 
+  ggplot(aes(id, nn))+
+  geom_point()+
+  theme_bw()+
+  labs(x = "", y = "distance to the first nearest neighbour",
+       title = "Euclidean distance to point's nearest neighbour")+
+  facet_wrap(~type, scale = "free_x")+
+  geom_text(data = nn_df[nrow(nn_df),],
+            aes(x = id - 6, label = language))+
+  geom_text(data = nn_glottolog[nn_glottolog$language == last(nn_df$language),],
+            aes(y = nn+2, label = language))+
+  geom_point(data = nn_df[nrow(nn_df),], color = "red")+
+  geom_point(data = nn_glottolog[nn_glottolog$language == last(nn_df$language),],
+             color = "red")
+```
+
+This graph shows that Tagalog point have the unnormally big distance to the nearest neighbour. So the cluster with Tagalog is underrepresent in our data. We need to keep it in mind. Other clusters are underrepresented too. We can color points by group or by area and that will show us which of the area or the language group is overrepresented and which is underrepresented in our sample (from areal poiint of view). We could calculate not only the first nearest neighbour, but also the second, the third etc.
