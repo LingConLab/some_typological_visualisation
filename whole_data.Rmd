@@ -40,7 +40,7 @@ map.feature(complex$language,
             longitude = complex$ULong,
             label = complex$language,
             title = "Overall complexity",
-            color = c("white", "red"))
+            color = c("white", "lightblue", "black"))
 
 map.feature(complex$language,
             complex$Morphological_complexity,
@@ -48,7 +48,7 @@ map.feature(complex$language,
             longitude = complex$ULong,
             label = complex$language,
             title = "Morphological complexity", 
-            color = c("white", "red"))
+            color = c("white", "lightblue", "black"))
 ```
 
 
@@ -78,7 +78,7 @@ map.feature(person$language2,
             longitude = person$long,
             label = person$language2,
             features = person$Lex,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "person Lex")
 
 map.feature(person$language2,
@@ -86,7 +86,7 @@ map.feature(person$language2,
             longitude = person$long,
             label = person$language2,
             features = person$Infl,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "person Infl")
 ```
 
@@ -115,7 +115,7 @@ map.feature(caus$language2,
             longitude = caus$long,
             label = paste(caus$language, round(caus$`% Cs`, 2)),
             features = caus$`% Cs`,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "% Cs")
 ```
 
@@ -183,7 +183,7 @@ map.feature(NV$language2,
             longitude = NV$ulong,
             label = paste(NV$language, round(NV$`% N/all`, 2)),
             features = NV$`% N/all`,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "% N/all")
 ```
 
@@ -194,7 +194,7 @@ map.feature(NV$language2,
             longitude = NV$ulong,
             label = paste(NV$language, round(NV$`% V/all`, 2)),
             features = NV$`% V/all`,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "% V/all")
 ```
 
@@ -205,7 +205,7 @@ map.feature(NV$language2,
             longitude = NV$ulong,
             label = paste(NV$language, round(NV$`% Flex/all`, 2)),
             features = NV$`% Flex/all`,
-            color = c("white", "red"),
+            color = c("white", "lightblue", "black"),
             title = "% Flex/all")
 ```
 
