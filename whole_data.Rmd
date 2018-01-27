@@ -56,6 +56,40 @@ map.feature(complex$language,
 ### Person
 Lexical and inflectional points (on a questionnaire where each item identifies a pattern or behavior of the category of person as to whether it is inflectional or lexical). Entries are total points per language, and percentages (calculated only when total for each is over 2 points). 
 
+```{r}
+person <- read_tsv("person.csv", skip = 1)
+person <- left_join(person, autotyp)
+person$language2 <- lang.gltc(person$Glottocode)
+
+person$language2[which(is.na(person$language2))] <- c(
+  "Kenuzi-Dongola", # Dongolese Nubian			
+  "Central Kanuri", # Kanuri			
+  "Laz", # Laz (Pazar)			
+  "Armenian", # E. Armenian			
+  "Western Mari", # Mari			
+  "Aka-Kede", # Great Andamanese			
+  "Atampaya", # Uradhi			
+  "El Nayar Cora", # Cora			
+  "Asheninka Perene"# Alto Perené
+)
+
+map.feature(person$language2,
+            latitude = person$lat,
+            longitude = person$long,
+            label = person$language2,
+            features = person$Lex,
+            color = c("white", "red"),
+            title = "person Lex")
+
+map.feature(person$language2,
+            latitude = person$lat,
+            longitude = person$long,
+            label = person$language2,
+            features = person$Infl,
+            color = c("white", "red"),
+            title = "person Infl")
+```
+
 ### Causativization
 Percent of a 9-item verb pair list where the causal (=semantic causative) member of the pair is derived.
 ```{r}
