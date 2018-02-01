@@ -9,11 +9,12 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(message = FALSE, fig.width=7.5)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, fig.width=7.5)
 ```
 
 ```{r}
 library(lingtypology)
+library(leaflet.extras)
 library(tidyverse)
 library(spatstat)
 ```
@@ -55,7 +56,8 @@ map.feature(complex$language,
             longitude = complex$ULong,
             label = complex$language,
             title = "Morphological complexity", 
-            color = c("white", "lightblue", "black"))
+            color = c("white", "lightblue", "black")) %>% 
+  addFullscreenControl()
 ```
 
 
@@ -102,7 +104,8 @@ map.feature(person$language2,
             label = person$language2,
             features = person$Infl,
             color = c("white", "lightblue", "black"),
-            title = "person Infl")
+            title = "person Infl") %>% 
+  addFullscreenControl()
 ```
 
 ### Causativization
@@ -135,7 +138,8 @@ map.feature(caus$language2,
             label = paste(caus$language, round(caus$`% Cs`, 2)),
             features = caus$`% Cs`,
             color = c("white", "lightblue", "black"),
-            title = "% Cs")
+            title = "% Cs") %>% 
+  addFullscreenControl()
 ```
 
 ### Inclusive/exclusive
@@ -180,7 +184,8 @@ map.feature(incl_excl$language2,
             color = c("tomato",
                       "darkgreen",
                       "lightgrey",
-                      "lightseagreen"))
+                      "lightseagreen")) %>% 
+  addFullscreenControl()
 ```
 
 ### Noun- and verb-based
@@ -207,7 +212,8 @@ map.feature(NV$language2,
             label = paste(NV$language, round(NV$`% N/all`, 2)),
             features = NV$`% N/all`,
             color = c("white", "lightblue", "black"),
-            title = "% N/all")
+            title = "% N/all") %>% 
+  addFullscreenControl()
 ```
 
 #### 5.1.2 % V/all
@@ -222,7 +228,8 @@ map.feature(NV$language2,
             label = paste(NV$language, round(NV$`% V/all`, 2)),
             features = NV$`% V/all`,
             color = c("white", "lightblue", "black"),
-            title = "% V/all")
+            title = "% V/all") %>% 
+  addFullscreenControl()
 ```
 
 #### 5.1.3 % Flex/all
@@ -237,7 +244,8 @@ map.feature(NV$language2,
             label = paste(NV$language, round(NV$`% Flex/all`, 2)),
             features = NV$`% Flex/all`,
             color = c("white", "lightblue", "black"),
-            title = "% Flex/all")
+            title = "% Flex/all") %>% 
+  addFullscreenControl()
 ```
 
 #### 5.2.1 Nearest neighbour
@@ -279,3 +287,20 @@ nn_glottolog %>%
 ```
 
 This graph shows that Tagalog point have the unnormally big distance to the nearest neighbour. So the cluster with Tagalog is underrepresent in our data. We need to keep it in mind. Other clusters are underrepresented too. We can color points by group or by area and that will show us which of the area or the language group is overrepresented and which is underrepresented in our sample (from areal poiint of view). We could calculate not only the first nearest neighbour, but also the second, the third etc.
+
+### Opacity
+
+Opacity (vs. transparency)   (a.k.a. Canonical Complexity)
+
+```{r}
+read_csv("opacity.csv") %>% 
+  arrange(Opacity) ->
+  opacity
+map.feature(opacity$language2,
+            features = opacity$Opacity,
+            label = opacity$Language,
+            color = c("white", "lightblue", "black"),
+            title = "Opacity") %>% 
+  addFullscreenControl()
+```
+
