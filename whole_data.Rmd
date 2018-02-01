@@ -44,7 +44,8 @@ map.feature(complex$language,
             longitude = complex$ULong,
             label = complex$language,
             title = "Overall complexity",
-            color = c("white", "lightblue", "black"))
+            color = c("white", "lightblue", "black")) %>% 
+  addFullscreenControl()
 
 complex %>% 
   arrange(Morphological_complexity) ->
