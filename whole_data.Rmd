@@ -179,6 +179,7 @@ incl_excl %>%
 map.feature(incl_excl$language2,
             latitude = incl_excl$lat,
             longitude = incl_excl$long,
+            popup = paste(incl_excl$source, ifelse(is.na(incl_excl$comment), "", paste("<br>", incl_excl$comment))),
             label = incl_excl$language,
             features = incl_excl$ie_type,
             title = "inclusive/exclusive opposition",
