@@ -6,6 +6,8 @@ output:
     highlight: pygments
     code_folding: hide
     df_print: paged
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -149,29 +151,30 @@ Presence vs. absence of inclusive/exclusive opposition.  Data from Autotyp datab
 incl_excl <- read_tsv("excl_incl.csv", skip = 1)
 incl_excl <- left_join(incl_excl, autotyp)
 incl_excl$language2 <- lang.gltc(incl_excl$Glottocode)
-incl_excl$language2[c(22, 26, 35, 40, 56, 63, 86, 136, 137, 138, 139, 144, 151,
-                 174, 203, 213, 307, 354, 387, 425)] <-
-  c("Central Moroccan Berber", # "Berber"
-    "Central Kanuri", # "Kanuri"
-    "Central Grebo", # "Grebo"
-    "Kenuzi-Dongola",  # Nubian (Dongolese)
+#incl_excl$language2[c(22, 26, 35, 40, 56, 63, 86, 136, 137, 138, 139, 144, 151, 174, 203, 213, 307, 354, 387, 425)] <-
+incl_excl$language2[c(which(is.na(incl_excl$language2)),
+                      which(is.na(incl_excl$LID)))] <-
+  c("Futuna-Aniwa", # Futuna (West)
+    "Gurung", # "Gurung"
     "Plateau Malagasy", # "Malagasy"
     "Armenian", # "Armenian (Eastern)"
+    "Central Moroccan Berber", # "Berber"
+    "Central Grebo", # "Grebo"
+    "Central Kanuri", # "Kanuri"
     "Western Mari", # "Mari"
-    "Sakha", # "Yakut"
-    "Nganasan", # "Nganasan"
-    "Obdorsk Khanty", # "Khanty"
-    "Udihe", # "Udehe"
-    "Manchu", # "Manchu"
-    "Aka-Kede", # "Great Andamanese"
-    "Gurung", # "Gurung"
-    "Atampaya", # "Uradhi"
     "Wangaaybuwan-Ngiyambaa", # "Ngiyambaa"
-    "Futuna-Aniwa", # "Futuna"
-    "Central Ojibwa", # "Ojibwa"
+    "Kenuzi-Dongola",  # Nubian (Dongolese)
+    "Aka-Kede", # "Great Andamanese"
+    "Atampaya", # "Uradhi"
+    "Asheninka Perene", # "Ashéninka Perené"
     "Totontepec Mixe", # "Mixe"
-    "Asheninka Perene") # "Ashéninka Perené"
-
+    "Central Ojibwa", # "Ojibwa"
+    "Manchu", # "Manchu"
+    "Udihe", # "Udehe"
+    "Obdorsk Khanty", # "Khanty"    
+    "Nganasan", # "Nganasan"
+    "Sakha") # "Yakut")
+    
 incl_excl %>% 
   arrange(desc(ie_type)) ->
   incl_excl
