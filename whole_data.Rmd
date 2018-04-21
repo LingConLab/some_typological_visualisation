@@ -154,25 +154,25 @@ incl_excl$language2 <- lang.gltc(incl_excl$Glottocode)
 #incl_excl$language2[c(22, 26, 35, 40, 56, 63, 86, 136, 137, 138, 139, 144, 151, 174, 203, 213, 307, 354, 387, 425)] <-
 incl_excl$language2[c(which(is.na(incl_excl$language2)),
                       which(is.na(incl_excl$LID)))] <-
-  c("Futuna-Aniwa", # Futuna (West)
-    "Gurung", # "Gurung"
-    "Plateau Malagasy", # "Malagasy"
-    "Armenian", # "Armenian (Eastern)"
+  c("Armenian", # "Armenian (Eastern)", 
+    "Asheninka Perene", # "Ashéninka Perené"
     "Central Moroccan Berber", # "Berber"
-    "Central Grebo", # "Grebo"
+    "Futuna-Aniwa", # Futuna (West)
+    "Aka-Kede", # "Great Andamanese"
+    "Central Grebo", # "Grebo"    
+    "Gurung", # "Gurung"
     "Central Kanuri", # "Kanuri"
+    "Plateau Malagasy", # "Malagasy"
     "Western Mari", # "Mari"
+    "Totontepec Mixe", # "Mixe"
     "Wangaaybuwan-Ngiyambaa", # "Ngiyambaa"
     "Kenuzi-Dongola",  # Nubian (Dongolese)
-    "Aka-Kede", # "Great Andamanese"
-    "Atampaya", # "Uradhi"
-    "Asheninka Perene", # "Ashéninka Perené"
-    "Totontepec Mixe", # "Mixe"
     "Central Ojibwa", # "Ojibwa"
+    "Atampaya", # "Uradhi"
+    "Obdorsk Khanty", # "Khanty"        
     "Manchu", # "Manchu"
-    "Udihe", # "Udehe"
-    "Obdorsk Khanty", # "Khanty"    
     "Nganasan", # "Nganasan"
+    "Udihe", # "Udehe"
     "Sakha") # "Yakut")
     
 incl_excl %>% 
@@ -182,7 +182,7 @@ incl_excl %>%
 map.feature(incl_excl$language2,
             latitude = incl_excl$lat,
             longitude = incl_excl$long,
-            popup = paste(incl_excl$source, ifelse(is.na(incl_excl$comment), "", paste("<br>", incl_excl$comment))),
+            popup = incl_excl$source,
             label = incl_excl$language,
             features = incl_excl$ie_type,
             title = "inclusive/exclusive opposition",
